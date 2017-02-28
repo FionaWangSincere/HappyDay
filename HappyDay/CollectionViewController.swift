@@ -41,7 +41,17 @@ class CollectionViewController: UICollectionViewController, UISearchBarDelegate,
     }
     
     func checkPermissions(){
+        let photosAuthorized = PHPhotoLibrary.authorizationStatus() == .authorized
+        let recordingAuthorized = AVAudioSession.sharedInstance().recordPermission() == .granted
+        let transcibeAuthorized = SFSpeechRecognizer.authorizationStatus() == .authorized
         
+        let authorized = photosAuthorized && recordingAuthorized && transcibeAuthorized
+        
+        if authorized == false{
+            if let vc = storyboard?.instantiateViewController(withIdentifier: "FirstRun"){
+                navigationController?.present(vc, animated: true)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,6 +71,29 @@ class CollectionViewController: UICollectionViewController, UISearchBarDelegate,
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
+    
+    func loadMemory(){
+        memories.removeAll()
+        
+        guard let files = try? FileManager.default.contentsOfDirectory(at: getDocumentsDirectory(), includingPropertiesForKeys: nil, options: [])
+        else {
+            return
+        }
+        
+        for file in files {
+            let filename = file.lastPathComponent
+            
+            if filename.hasSuffix(".thumb"){
+                let noExtension = filename.replacingOccurrences(of: ".thumb", with: "")
+                let memoryPath = getDocumentsDirectory().appendingPathComponent(noExtension)
+                memories.append(memoryPath)
+            }
+        }
+        
+        filteredMemories = memories
+        collectionView?.reloadSections(IndexSet(integer: 1))
+    }
+
 
     func loadNavigationItem(){
         let rightBar = UIBarButtonItem.init(title: "ADD", style: .done, target: self, action: #selector(changeColor))
@@ -73,37 +106,114 @@ class CollectionViewController: UICollectionViewController, UISearchBarDelegate,
         
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        dismiss(animated: true)
+        
+        if let possibleImage = info[UIImagePickerControllerOriginalImage] as?
+            UIImage{
+            saveNewMemory(image: possibleImage)
+            loadMemory()
+        }
     }
-    */
+    
+    func saveNewMemory(image: UIImage){
+        let memoryName = "memory-\(Date().timeIntervalSince1970)"
+        let imageName = memoryName + ".jpg"
+        let thumbnailName = memoryName + ".thumb"
+        
+        do {
+            let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
+            if let jpegData = UIImageJPEGRepresentation(image, 80){
+                try jpegData.write(to: imagePath, options: [.atomicWrite])
+            }
+            
+            if let thumbnail = resize(image:image, to:200){
+                let imagePath = getDocumentsDirectory().appendingPathComponent(thumbnailName)
+                if let jpegData = UIImageJPEGRepresentation(thumbnail, 80){
+                    try jpegData.write(to:imagePath, options:[.atomicWrite])
+                }
+            }
+        }catch{
+            print("Fiald to save to disk.")
+        }
+    }
+    
+    func resize(image: UIImage , to width : CGFloat)->UIImage?{
+        let scale = width / image.size.width
+        let height = image.size.height * scale
 
-    // MARK: UICollectionViewDataSource
+    UIGraphicsBeginImageContextWithOptions(CGSize(width:width, heigth:height), false, 0)
+    image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+      
+        return 2
     }
 
+    func imageURL(for memory:URL)->URL{
+        return memory.appendingPathExtension("jpg")
+    }
+    
+    func thumbnailURL(for memory: URL)-> URL{
+        return memory.appendingPathExtension("thumb")
+    }
+    
+    func audioURL (for memory :URL)-> URL{
+        return memory.appendingPathExtension("m4a")
+    }
+    
+    func transcriptionURL(for memory: URL)->URL{
+        return memory.appendingPathExtension("txt")
+    }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+        if section == 0{
+            return 0
+        }else{
+            return filteredMemories.count
+        }
     }
 
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-//    
-//        // Configure the cell
-//    
-//        return cell
-//    }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Memory", for: indexPath)
+        
+        let memory = filteredMemories[indexPath.row]
+        let imageName = thumbnailURL(for: memory).path
+        let image = UIImage(contentsOfFile: imageName)
+        cell.imageView.image = image
+        
+        if cell.gestureRecognizers == nil{
+            let recognizer = UILongPressGestureRecognizer(target: self, action: <#T##Selector?#>)
+            recognizer.minimumPressDuration = 0.25
+            cell.addGestureRecognizer(recognizer)
+            
+            cell.layer.borderColor = UIColor.white.cgColor
+            cell.layer.borderWidth = 3
+            cell.layer.cornerRadius = 10
+        }
+    
+        // Configure the cell
+    
+        return cell
+    }
 
+    func memoryLongPress(sender: UILongPressGestureRecognizer){
+        if sender.state == .begin{
+            let cell = sender.view
+            if let index = collectionView?.indexPath(for: cell){
+                activeMemory = filteredMemories[index.row]
+            
+            }
+        }
+    }
+    
+    func recordMemory(){
+        
+    }
     // MARK: UICollectionViewDelegate
 
     /*
