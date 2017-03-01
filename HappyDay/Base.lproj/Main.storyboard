@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="7OD-2p-sMY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qqw-Nn-mSl">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -33,7 +33,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Memory" id="Npz-0R-c80">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Memory" id="Npz-0R-c80" customClass="MemoryCell" customModule="HappyDay" customModuleProvider="target">
                                         <rect key="frame" x="87.5" y="50" width="200" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -52,6 +52,9 @@
                                             <constraint firstItem="vfg-bV-CaQ" firstAttribute="leading" secondItem="Npz-0R-c80" secondAttribute="leading" id="ySF-gq-CWa"/>
                                         </constraints>
                                         <size key="customSize" width="200" height="200"/>
+                                        <connections>
+                                            <outlet property="imageView" destination="vfg-bV-CaQ" id="gjq-Dn-IvX"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Header" id="b8Y-AK-odX">
@@ -65,11 +68,18 @@
                                         </searchBar>
                                     </subviews>
                                 </collectionReusableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="GxR-Sp-BaZ" id="y8v-Sp-61h"/>
+                                    <outlet property="delegate" destination="GxR-Sp-BaZ" id="beV-GH-ptX"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="gpP-xj-WEQ"/>
+                    <connections>
+                        <outlet property="collectionView" destination="JIR-yp-9jC" id="BWF-UT-LGi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FvZ-LK-l5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
