@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -33,7 +34,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Memory" id="Npz-0R-c80">
-                                        <rect key="frame" x="88" y="50" width="200" height="200"/>
+                                        <rect key="frame" x="87.5" y="50" width="200" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
@@ -72,7 +73,57 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FvZ-LK-l5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3744.8000000000002" y="-581.55922038980509"/>
+            <point key="canvasLocation" x="4684" y="-581.55922038980509"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="arG-xh-l0F">
+            <objects>
+                <viewController storyboardIdentifier="FirstView" id="jfk-Qm-GIw" customClass="ViewController" customModule="HappyDay" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bzW-ao-jEO"/>
+                        <viewControllerLayoutGuide type="bottom" id="JwP-gD-EXJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ps2-GE-t48">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="WUw-Ng-ilN">
+                                <rect key="frame" x="36" y="175" width="303" height="318"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZD-xN-dQ0">
+                                        <rect key="frame" x="0.0" y="0.0" width="303" height="226"/>
+                                        <string key="text">“In order to work fully, Happy Days needs to read your photo library, record your voice, and transcribe what you said. When you click the button below you will be asked to grant those permissions, but you can change your mind later in Settings.”</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0Z-g3-1gv">
+                                        <rect key="frame" x="0.0" y="276" width="303" height="42"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <state key="normal" title="Continue"/>
+                                        <connections>
+                                            <action selector="continueButton:" destination="jfk-Qm-GIw" eventType="touchUpInside" id="UiG-c1-JE8"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WUw-Ng-ilN" firstAttribute="leading" secondItem="Ps2-GE-t48" secondAttribute="leadingMargin" constant="20" id="2pf-rN-D1k"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WUw-Ng-ilN" secondAttribute="trailing" constant="20" id="SIo-YI-ar6"/>
+                            <constraint firstItem="WUw-Ng-ilN" firstAttribute="centerX" secondItem="Ps2-GE-t48" secondAttribute="centerX" id="TUo-49-8eQ"/>
+                            <constraint firstItem="WUw-Ng-ilN" firstAttribute="centerY" secondItem="Ps2-GE-t48" secondAttribute="centerY" id="m4f-om-824"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="6du-cf-fOi"/>
+                    <connections>
+                        <outlet property="textLabel" destination="BZD-xN-dQ0" id="SZ5-9d-tw4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dlP-Pa-E8h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2829.5999999999999" y="-581.55922038980509"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2A1-uU-ChS">
@@ -90,7 +141,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tFE-Up-HQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2805.5999999999999" y="-581.55922038980509"/>
+            <point key="canvasLocation" x="3744.8000000000002" y="-581.55922038980509"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0eq-VO-8Jl">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qqw-Nn-mSl" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lfH-o5-Qz3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jfk-Qm-GIw" kind="relationship" relationship="rootViewController" id="MsG-YD-4ez"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RfS-qD-72z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1888.8" y="-582.45877061469275"/>
         </scene>
     </scenes>
 </document>
